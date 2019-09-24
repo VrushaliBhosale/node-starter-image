@@ -1,5 +1,6 @@
 import * as express from 'express';
 import UserRouter from './UserRouter';
+import ProjectsRouter from './ProjectsRouter';
 import { IServer } from '../interfaces/ServerInterface';
 
 import Auth from "../services/JwtToken";
@@ -13,6 +14,6 @@ export default class Routes {
         const router: express.Router = express.Router();
         server.app.use('/', router);
         server.app.use('/api/verify', Auth.verifyRequestAuth);
-        server.app.use('/api/users', new UserRouter().router);
+        server.app.use('/api/projects', new ProjectsRouter().router);
     }
 }

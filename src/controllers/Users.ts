@@ -3,31 +3,6 @@ import * as express from 'express';
 import Auth from "../services/JwtToken";
 class UserController {
 
-    /**
-     * @api {get} /user Get all users
-     * @apiName GetUser
-     * @apiGroup User
-     *
-     * @apiParam {Number} id Users unique ID.
-     *
-     * @apiSuccess {String} firstname Firstname of the User.
-     * @apiSuccess {String} lastname  Lastname of the User.
-     *
-     * @apiSuccessExample Success-Response:
-     *     HTTP/1.1 200 OK
-     *     {
-     *       "firstname": "John",
-     *       "lastname": "Doe"
-     *     }
-     *
-     * @apiError UserNotFound The id of the User was not found.
-     *
-     * @apiErrorExample Error-Response:
-     *     HTTP/1.1 404 Not Found
-     *     {
-     *       "error": "UserNotFound"
-     *     }
-     */
     public getAllUsers(req: express.Request, res: express.Response, next: express.NextFunction): void {
 			UserModel
 				.find({})
