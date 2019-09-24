@@ -9,7 +9,6 @@
         "node": "12.8.1"
     },
     "scripts": {
-        "build": "./node_modules/.bin/webpack",
         "server": "tsc && npm run build && nodemon ./build/index.js",
         "start": "node ./build/index.js",
         "ts:watch": "tsc -w",
