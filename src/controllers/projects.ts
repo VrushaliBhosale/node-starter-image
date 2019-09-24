@@ -42,9 +42,7 @@ class ProjectController {
     }
     public updateProject(req: express.Request, res: express.Response, next: express.NextFunction): void {
 				let updatePayload: any = {};
-				console.log('REQ.BoDY :', req.body);
 				updatePayload = req.body;
-				console.log("updatePayload :", updatePayload);
 				ProjectModel.update(
 					req.params,
 					{$push: {reports: updatePayload} }
