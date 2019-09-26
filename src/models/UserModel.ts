@@ -6,7 +6,7 @@ import { Schema, Document } from 'mongoose';
  * @interface IUserModel
  * @extends {Document}
  */
-export interface IUserModel extends Document {
+export interface IUserModel extends Document {  
     createdAt ? : Date;
     updatedAt ? : Date;
     name: string;
