@@ -1,5 +1,7 @@
+import { InfluxDB } from 'influx';
 import * as mongoose from 'mongoose';
 import { default as config } from '../env/index';
+const Influx = require("influx");
 
 /**
  * @interface IConnectOptions
@@ -18,7 +20,36 @@ const connectOptions: IConnectOptions = {
 
 const MONGO_URI: string = `${config.envConfig.database.MONGODB_URI}${config.envConfig.database.MONGODB_DB_MAIN}`;
 
-export const db: mongoose.Connection = mongoose.createConnection(MONGO_URI, connectOptions);
+export const db: mongoose.Connection = mongoose.createConnection("mongodb://mongo:27017/f_meter_db", connectOptions);
+console.log("db string is :",MONGO_URI);
+export const influx: InfluxDB = new Influx.InfluxDB({
+    host: "influxdb",
+    database: "express_response_db",
+    schema: [
+      {
+        measurement: "response_times",
+        fields: {
+          path: Influx.FieldType.STRING,
+          duration: Influx.FieldType.INTEGER,
+        },
+        tags: ["host"],
+      },
+    ],
+  });
+
+  influx
+  .getDatabaseNames()
+  .then((names) => {
+    if (!names.includes("express_response_db")) {
+      return influx.createDatabase("express_response_db");
+    }
+  })
+  .then(() => {
+    console.log("influx database exits..");
+  })
+  .catch((err) => {
+    console.error(`Error creating Influx database!`);
+  });
 
 // handlers
 db.on('connecting', () => {

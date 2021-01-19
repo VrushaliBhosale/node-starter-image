@@ -7,6 +7,8 @@ import * as helmet from 'helmet';
 import { IServer } from '../interfaces/ServerInterface';
 import { renderFile } from 'ejs';
 import * as path from 'path';
+import {influx} from './connection';
+const os = require("os");
 
 /**
  * @export
@@ -38,5 +40,27 @@ export default class Middleware {
             // res.header('Access-Control-Allow-Credentials', 'true');
             next();
         });
+
+    server.app.use((req,res,next) => {
+        const start = Date.now();
+
+        res.on("finish", () => {
+            const duration = Date.now() - start;
+            console.log(`Request to ${req.path} took ${duration}ms`);
+
+            influx
+            .writePoints([
+                {
+                measurement: "response_times",
+                tags: { host: os.hostname() },
+                fields: { duration, path: req.path },
+                },
+            ])
+            .catch((err) => {
+                console.error(`Error saving data to InfluxDB! ${err.stack}`);
+            });
+        });
+        return next();
+    })
     }
 }

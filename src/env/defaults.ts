@@ -1,7 +1,7 @@
 // default config
 
 const config: any = {
-    port: process.env.PORT || 3000,
+    port: 8000,
     env: 'development',
     database: {
         client: 'mongodb'
